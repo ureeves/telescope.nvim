@@ -361,7 +361,7 @@ local function check_capabilities(method, bufnr)
 
   for _, client in pairs(clients) do
     -- we always pass opts, even though older nvim version might not have a second param
-    if client.supports_method(method, { bufnr = bufnr }) then
+    if client:supports_method(method, { bufnr = bufnr }) then
       return true
     end
   end
