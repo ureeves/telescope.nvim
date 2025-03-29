@@ -184,7 +184,7 @@ local function list_or_jump(action, title, opts)
           vim.cmd(string.format("%s %s", cmd, file_path))
         end
       end
-      vim.lsp.util.jump_to_location(flattened_results[1], offset_encoding)
+      vim.lsp.util.show_document(flattened_results[1], offset_encoding, { focus = true, reuse_win = true })
     else
       local locations = vim.lsp.util.locations_to_items(flattened_results, offset_encoding)
       pickers
