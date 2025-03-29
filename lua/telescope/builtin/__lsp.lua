@@ -12,7 +12,7 @@ local lsp = {}
 lsp.references = function(opts)
   local filepath = vim.api.nvim_buf_get_name(opts.bufnr)
   local lnum = vim.api.nvim_win_get_cursor(opts.winnr)[1]
-  local params = vim.lsp.util.make_position_params(opts.winnr)
+  local params = vim.lsp.util.make_position_params(opts.winnr, "utf-8")
   local include_current_line = vim.F.if_nil(opts.include_current_line, false)
   params.context = { includeDeclaration = vim.F.if_nil(opts.include_declaration, true) }
 
@@ -115,7 +115,7 @@ local function pick_call_hierarchy_item(call_hierarchy_items)
 end
 
 local function calls(opts, direction)
-  local params = vim.lsp.util.make_position_params()
+  local params = vim.lsp.util.make_position_params(opts.winnr, "utf-8")
   vim.lsp.buf_request(opts.bufnr, "textDocument/prepareCallHierarchy", params, function(err, result)
     if err then
       vim.api.nvim_err_writeln("Error when preparing call hierarchy: " .. err)
@@ -144,7 +144,7 @@ lsp.outgoing_calls = function(opts)
 end
 
 local function list_or_jump(action, title, opts)
-  local params = vim.lsp.util.make_position_params(opts.winnr)
+  local params = vim.lsp.util.make_position_params(opts.winnr, "utf-8")
   vim.lsp.buf_request(opts.bufnr, action, params, function(err, result, ctx, _)
     if err then
       vim.api.nvim_err_writeln("Error when executing " .. action .. " : " .. err.message)
@@ -217,7 +217,7 @@ lsp.implementations = function(opts)
 end
 
 lsp.document_symbols = function(opts)
-  local params = vim.lsp.util.make_position_params(opts.winnr)
+  local params = vim.lsp.util.make_position_params(opts.winnr, "utf-8")
   vim.lsp.buf_request(opts.bufnr, "textDocument/documentSymbol", params, function(err, result, _, _)
     if err then
       vim.api.nvim_err_writeln("Error when finding document symbols: " .. err.message)
